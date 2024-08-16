@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <script src="socket.io/socket.io.js"></script>
+        <script>
+            var count = 0;
+            var sec = location.href.indexOf('https://') == 0
+            var socket = io.connect((sec ? 'https://' : 'http://') + '<%=url%>', { path: '<%=vPath%>socket.io', query: {
+                token: '<%=token%>',
+                transports: ['websocket']
+            } });
+            socket.on('registry', function (res) {
+                console.log('регистрация: ' + res.data.success)
+            });
+            </script>
+    </head>
+    <body>
+        <div id="reg"></div>
+
+        <textarea id="info" style="width: 100%;height: 100%;"></textarea>
+    </body>
+</html>

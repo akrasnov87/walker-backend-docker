@@ -1,0 +1,42 @@
+{
+  "name": "walker-rpc-service",
+  "version": "0.38.428",
+  "private": true,
+  "birthday": "2024-08-16",
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "@socket.io/cluster-adapter": "^0.2.2",
+    "@socket.io/postgres-adapter": "^0.3.1",
+    "@socket.io/postgres-emitter": "^0.1.0",
+    "@socket.io/sticky": "^1.0.4",
+    "args-parser": "^1.3.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "latest",
+    "ejs": "^3.1.5",
+    "express": "^4.17.2",
+    "express-fileupload": "^1.2.0",
+    "express-session": "^1.17.1",
+    "firebase-admin": "^12.1.0",
+    "form-data": "latest",
+    "http-errors": "^1.8.1",
+    "json-2-csv": "git+https://github.com/akrasnov87/json-2-csv.git",
+    "json-parser": "latest",
+    "mime-types": "^2.1.34",
+    "mobnius-packager": "git://git.mobwal.com/mobnius/packager.git",
+    "mobnius-pg-dbcontext": "git://git.mobwal.com/mobnius/pg-dbcontext.git",
+    "mobnius-schema-reader": "git://git.mobwal.com/mobnius/schema-reader.git",
+    "moment": "^2.29.1",
+    "node-cache": "^5.1.2",
+    "request": "^2.88.2",
+    "rimraf": "^3.0.2",
+    "serve-favicon": "latest",
+    "socket.io": "^4.4.1",
+    "uuid": "^8.3.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/akrasnov87/walker-rpc-service"
+  }
+}

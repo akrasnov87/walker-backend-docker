@@ -1,0 +1,7 @@
+node_modules
+*-lock.json
+/schema
+/files
+mobilewalker-*.json
+/temp
+dev.conf
