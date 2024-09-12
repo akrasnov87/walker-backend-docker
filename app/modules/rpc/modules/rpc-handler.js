@@ -55,7 +55,22 @@
              }
              req.params.name = namespace;
              item = securityData(sessionState.user, item, item.schema || namespace, item.action, item.method);
- 
+
+             if(!Array.isArray(item.data)) {
+                return res.json([{
+                    meta: {
+                        success: false,
+                        msg: 'No valid body'
+                    },
+                    code: 500,
+                    tid: item.tid,
+                    type: "rpc",
+                    method: item.method,
+                    action: item.action,
+                    host: utils.getCurrentHost()
+                }]);
+             }
+
              var alias = item.data[0].alias;
              if (alias) {
                  /**

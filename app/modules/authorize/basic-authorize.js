@@ -184,7 +184,7 @@ exports.authorize = function (req, res, next) {
                 Console.debug(`Пользователь ${UserName} выполнил авторизацию.`, 'AUTH', user.id, user.c_claims);
 
                 res.json({
-                    token: Buffer.from(UserName + ':' + Password).toString('base64'),
+                    token: Buffer.from(UserName + ':' + (Password || "")).toString('base64'),
                     user: {
                         id: user.id,
                         login: user.c_login,

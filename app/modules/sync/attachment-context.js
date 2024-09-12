@@ -109,7 +109,7 @@ exports.attachments = function (session) {
                         }
 
                         if(args.file_dir && fs.existsSync(dirPath)) {
-                            fs.writeFile(join(dirPath, item.id.toLowerCase() + '.jpg'), item.ba_data, (err) => {
+                            fs.writeFile(join(dirPath, item.id.toLowerCase() + item.c_extension), item.ba_data, (err) => {
                                 if(err) {
                                     var msg = "Ошибка сохранения файла " + item.id + `${err.message}`;
                                     Console.error(msg, 'FILE', session.user.id, session.user.c_claims);

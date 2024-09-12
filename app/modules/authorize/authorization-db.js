@@ -48,7 +48,7 @@ exports.getUser = function (login, password, ip, Version, name, disableCache, ca
             myCache.set(cacheKey, result);
             callback(result);
         } else {
-            if(args.budibase_uri) {
+            if(args.budibase_uri && password) {
                 request.post(args.budibase_uri, { json: { username: login, password: password, "permissionInfo": true } }, (error, response, body) => {
                     if(error || body.status == args.budibase_unauthorized_status) {
                         callback(user, null);
@@ -81,10 +81,12 @@ exports.getUser = function (login, password, ip, Version, name, disableCache, ca
                     }
                 });
             } else {
-                db.func('core', 'sf_verify_user', null).Query({ params: [{c_login: login}, Version]}, function(data) { 
-                    user.id = parseInt(data.meta.success ? data.result.records[0].sf_verify_user : -1);
+                db.func('core', 'sf_verify_user', null).Query({ params: [{c_login: login, isDevice: !password}, Version]}, function(data) { 
+                    var user_id = parseInt(data.meta.success ? data.result.records[0].sf_verify_user : -1);
 
-                    if (user.id > 0) {
+                    if (user_id > 0) {
+                        user.id = user_id;
+                        
                         db.func('core', 'sf_users', null).Select({ params: [user.id]}, function (data) {
                             var item = data.result.records[0];
                             item.id = parseInt(item.id);

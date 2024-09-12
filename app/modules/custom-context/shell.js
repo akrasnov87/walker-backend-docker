@@ -10,6 +10,7 @@
 var result_layout = require('mobnius-pg-dbcontext/modules/result-layout');
 var db = require('../dbcontext');
 var Console = require('../log');
+var moment = require('moment');
 
 /**
  * Объект с набором RPC функций
@@ -83,6 +84,41 @@ exports.shell = function (session) {
                     callback(result_layout.error(new Error(result.meta.msg)));
                 }
             });
+        },
+
+        /**
+         * Добавление информации о перемещении
+         * 
+         * @param {*} data 
+         * @param {*} callback 
+         */
+        trackerPush: function(data, callback) {
+            var items = [];
+            if(Array.isArray(data)) {
+                for(var i = 0; i < data.length; i++) {
+                    var line = data[i];
+                    var lineData = line.split(';');
+                    items.push({
+                        fn_user: session.user.id,
+                        x: parseFloat(lineData[0]),
+                        y: parseFloat(lineData[1]),
+                        d_date: lineData[2],
+                        d_time: lineData[3]
+                    })
+                }
+
+                db.table('dbo', 'ad_tracks', session).Add(items, function (result) {
+                    if (result.meta.success == true) {
+                        callback(result_layout.ok([{status: result.result.records[0].rowCount > 0 }]));
+                    } else {
+                        Console.error(`Добавление информации о непереданных данных ${JSON.stringify(data)}`, 'TRACKS', session.user.id, session.user.c_claims);
+    
+                        callback(result_layout.error(new Error(result.meta.msg)));
+                    }
+                });
+            } else {
+                callback(result_layout.error(new Error('data is empty')));
+            }
         }
     }
 }
