@@ -189,6 +189,7 @@ exports.authorize = function (req, res, next) {
                         id: user.id,
                         login: user.c_login,
                         claims: user.c_claims,
+                        username: user.c_name,
                         date: new Date(),
                         port: process.pid,
                         version: pkg.version,

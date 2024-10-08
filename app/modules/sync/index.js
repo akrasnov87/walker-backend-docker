@@ -8,6 +8,10 @@ var statusMessagesHandler = require('./status-messages-handler');
 var synchronizationHandler = require('./synchronization-handler');
 var utils = require('../utils');
 const process = require('process');
+var fs = require('fs');
+var join = require('path').join;
+const args = require('../conf')();
+var util = require('./catalog-util');
 
 /**
  * Инициализация
@@ -46,6 +50,22 @@ exports.init = function (io, authType) {
                     // обмен сообщениями
                     socket.on('messages', messagesHandler(socket, io));
                     socket.on('status-messages', statusMessagesHandler(socket, io));
+
+                    socket.on('remove', (tid) => {
+                        if(args.sync_auto_remove) {
+                            var root = join(__dirname, '../', '../', args.sync_storage);
+                            var dir = tid == "00000000-0000-0000-0000-000000000000" ? root : join(root, util.getCatalogName(new Date(), true));
+                            var file = join(dir, tid + '.pkg');
+                            if (fs.existsSync(file)) {
+                                fs.unlinkSync(file);
+                            }
+                            file = join(dir, tid + '.bkp');
+                            if (fs.existsSync(file)) {
+                                fs.unlinkSync(file);
+                            }
+                            Console.debug(`${tid}`, 'Socket.IO', socket.user.id, socket.user.c_claims, null, null, 'remove');
+                        }
+                    });
 
                     // информирование системы о том, что пользователь был зарегистрирован и обработчики настроены
                     socketUtils.registry(socket);

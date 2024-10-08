@@ -22,6 +22,7 @@ docker run  --env-file ./.env \
             --restart unless-stopped \
             -p 5001:5000 \
             -v ./app/files:/app/files:rw \
+            -d \
             akrasnov87/walker-rpc-service:0.1.0
 ```
 
@@ -40,6 +41,26 @@ BUDIBASE_URI=http://host.docker.internal:10000/api/global/auth/default/login
 4. Вызвать адрес `http://localhost:5001/walker/dev/exists`
 
 5. Сохранение контейнера в репозитории `docker push akrasnov87/walker-rpc-service:0.1.0`
+
+## Пример скрипта для запуска
+
+<pre>
+#!/bin/bash
+
+PORT=5006               # внешний порт
+ENV_NAME=dev            # сборка
+
+docker container rm -f walker-rpc-service-$ENV_NAME && \
+docker run  --env-file ./.env.$ENV_NAME \
+            --name walker-rpc-service-$ENV_NAME \
+            --restart unless-stopped \
+            -p $PORT:5000 \
+            -v ./$ENV_NAME/app/files:/app/files:rw \
+            -d \
+            akrasnov87/walker-rpc-service:0.1.1
+</pre>
+
+Для проверки выполнить `curl -i http://localhost:5006/walker/dev/exists`
 
 ### Параметры
 
